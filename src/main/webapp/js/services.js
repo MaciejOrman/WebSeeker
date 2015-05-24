@@ -20,7 +20,7 @@ sModule.service('linkService', function($rootScope,$http, $q){
 		
 		this.getSortedLinks = function(query1, nick1){
 			var deferred = $q.defer();
-			$http.post('/collsearch', {query:  query1, nick: nick1 }).success(function(data) {
+			$http.post('/meanratesearch', {query:  query1, nick: nick1 }).success(function(data) {
 			    			  deferred.resolve(data);
 			    		  }).
 			    		  error(function(data, status, headers, config) {
