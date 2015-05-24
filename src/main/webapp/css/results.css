@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+.firstCol {
+	min-width: 600px;
+	max-width: 800px;
+}
+.secondCol {
+	width: 300px;
+}
+
+.secondCol input{
+	width: 200px;
+}
+
+input[type=range] {
+ display: inline-block !important;
+ 
+}
+#heading1{
+	font-size: 40pt;
+	font-weight: bold;
+	font-family: cursive;
+	font-style: italic;
+	color: teal;
+}
+#heading1 img{
+ height: 100px;
+ width: 100px;
+}
+#heading2{
+	font-size: 20pt;
+	font-weight: bold;
+	font-family: cursive;
+	font-style: italic;
+	color: teal;
+}
+#heading2 img{
+ height: 50px;
+ width: 50px;
+}
+#body{
+	position: absolute;
+	margin-top: 0px;
+	padding-top:0px;
+	padding-top:150px;
+	padding-left: 400px;
+	text-align: center;
+}
+#body input{
+ width: 300px;
+}
+
+#loginPanel{
+	position: absolute;
+	margin-top: 0px;
+	padding-top:0px;
+	padding-left: 900px;
+	text-align: center;
+	
+}

@@ -1,0 +1,26 @@
+<span id="loginPanel">Signed in as: <b>{{nick}}</b></span>
+<span id="heading2"><img src="images/loupe.png" />Web seeker</span>
+<input type="text" ng-model="query" id="queryInput">
+<button ng-click="search()" id="searchButton">Search</button>
+<button ng-click="collSearch()" id="collSearchButton">Collaborative search</button>
+<br />
+<div class="content" ng-init="search()">
+
+	<table>
+		<tbody>
+			<tr ng-repeat="link in links.linksAndGrades">
+				<td class="firstCol"><a href="{{ link.url }}">{{link.title}}</a>
+					<br /> {{ link.url }}<br /> {{ link.kwic }}<br />
+				<br /></td>
+				<td class="secondCol"><input type="range" min="-1" max="5"
+					ng-model="link.grade"> <span ng-if="link.grade == -1">Not
+						rated.</span> <span ng-if="link.grade != -1">{{link.grade}}</span></td>
+				<td>{{link.meanGrade}}</td>		
+			</tr>
+		</tbody>
+	</table>
+	<button ng-click="back()">Back</button>
+	<button ng-click="printGrades()">Print all grades</button>
+	<button ng-click="sendGrades()">Send my grades!</button>
+
+</div>
