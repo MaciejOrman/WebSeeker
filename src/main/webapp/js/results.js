@@ -48,8 +48,18 @@ function ResultsController($scope, $rootScope, $http, $location, linkService, $c
 			});
 		};
 		
+		$scope.meanSearch = function(){
+			var promise = linkService.getMeanSortedLinks($scope.query, $scope.nick);
+			
+			promise.then(function(data){
+				$scope.links = data;
+				//$location.path('/webseeker/results');
+				
+			});
+		}
+		
 		$scope.collSearch = function(){
-			var promise = linkService.getSortedLinks($scope.query, $scope.nick);
+			var promise = linkService.getCollSortedLinks($scope.query, $scope.nick);
 			
 			promise.then(function(data){
 				$scope.links = data;

@@ -2,6 +2,7 @@
 <span id="heading2"><img src="images/loupe.png" />Web seeker</span>
 <input type="text" ng-model="query" id="queryInput">
 <button ng-click="search()" id="searchButton">Search</button>
+<button ng-click="meanSearch()" >Mean ratings search</button>
 <button ng-click="collSearch()" id="collSearchButton">Collaborative search</button>
 <br />
 <div class="content" ng-init="search()">
@@ -20,7 +21,7 @@
 		</tbody>
 	</table>
 	<button ng-click="back()">Back</button>
-	<button ng-click="printGrades()">Print all grades</button>
-	<button ng-click="sendGrades()">Send my grades!</button>
+	<button ng-click="printGrades()">Print all rates</button>
+	<button ng-click="sendGrades()">Send my rates!</button>
 
 </div>

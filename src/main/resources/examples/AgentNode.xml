@@ -1,0 +1,136 @@
+<!-- Generic application context definition. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<import resource="JMSMessaging.xml" />
+   <!--
+      # The default AgentNode configuration
+      # provides an empty platform definition with service directory and JMX support using RMI without registry
+      # this platform bean may be set as parent in any other platfom definitions if you want to make use of inheritance
+      # other possible properties are:
+      * Agents: contains a List of Agents (interface IAgent)
+      * EmbeddedBroker: sets an JmsBrokerAMQ (maybe we can introduce a switch wich turns on embedded broker stuff or use a bean for this to be configurable or something) see JMSMessaging.xml for more documentation
+      * AgentNodeBeans: a list of AgentNodeBeans
+      * ServiceDirectory: sets the ServiceDirectory
+      * LoggingConfig: sets the Logging configuration !needs more documentation here!
+      * AuthorizationPolicyFilename: sets the file for the java security policy property and activates the security manager
+   -->
+   <bean name="NodeWithJMX" parent="NodeWithDirectory" abstract="true">
+      <property name="jmxConnectors">
+         <set>
+         	<bean class="de.dailab.jiactng.agentcore.management.jmx.RmiJmxConnector" />
+         </set>
+      </property>
+   </bean>
+
+   <!--
+      # The default AgentNode configuration
+      # provides an empty platform definition with service directory and JMX support using RMI with an JAAS authenticator and without registry
+      # this platform bean may be set as parent in any other platfom definitions if you want to make use of inheritance
+      # other possible properties are:
+      * Agents: contains a List of Agents (interface IAgent)
+      * EmbeddedBroker: sets an JmsBrokerAMQ (maybe we can introduce a switch wich turns on embedded broker stuff or use a bean for this to be configurable or something) see JMSMessaging.xml for more documentation
+      * AgentNodeBeans: a list of AgentNodeBeans
+      * ServiceDirectory: sets the ServiceDirectory
+      * LoggingConfig: sets the Logging configuration !needs more documentation here!
+      * AuthorizationPolicyFilename: sets the file for the java security policy property and activates the security manager
+   -->
+   <bean name="NodeWithSecuredJMX" parent="NodeWithDirectory" abstract="true">
+      <property name="jmxConnectors">
+         <set>
+         	<bean class="de.dailab.jiactng.agentcore.management.jmx.RmiJmxConnector">
+         		<property name="authenticator">
+         			<ref bean="JaasAuthenticator"/>
+         		</property>
+         	</bean>
+         </set>
+      </property>
+   </bean>
+
+   <bean name="JaasAuthenticator" class="de.dailab.jiactng.agentcore.management.jmx.JaasAuthenticator">
+<!--    lazy-init="true">-->
+      <property name="configuration">
+         <list>
+            <ref bean="LoginJaas"/>
+         </list>
+      </property>
+      <property name="systemProperties">
+         <map>
+            <entry key="java.security.krb5.realm" value="DAI-LAB.DE"/>
+            <entry key="java.security.krb5.kdc" value="birke4.dai-lab.de"/>
+         </map>
+      </property>
+   </bean>
+
+   <bean name="LoginJaas" class="de.dailab.jiactng.agentcore.management.jmx.JaasConfigurationEntry">
+<!--    lazy-init="true">-->
+      <property name="loginModuleName" value="com.sun.security.auth.module.Krb5LoginModule"/>
+      <property name="controlFlag" value="required"/>
+      <property name="options">
+         <map>
+            <entry key="debug" value="false"/>
+            <entry key="useTicketCache" value="false"/>
+         </map>
+      </property>
+   </bean>
+
+   <!--
+      # The default AgentNode configuration
+      # provides an empty platform definition with service directory and JMX support using RMI with registry
+      # this platform bean may be set as parent in any other platfom definitions if you want to make use of inheritance
+      # other possible properties are:
+      * Agents: contains a List of Agents (interface IAgent)
+      * EmbeddedBroker: sets an JmsBrokerAMQ (maybe we can introduce a switch wich turns on embedded broker stuff or use a bean for this to be configurable or something) see JMSMessaging.xml for more documentation
+      * AgentNodeBeans: a list of AgentNodeBeans
+      * ServiceDirectory: sets the ServiceDirectory
+      * LoggingConfig: sets the Logging configuration !needs more documentation here!
+      * AuthorizationPolicyFilename: sets the file for the java security policy property and activates the security manager
+   -->
+   <bean name="NodeWithRegistry" parent="NodeWithDirectory" abstract="true">
+      <property name="jmxConnectors">
+         <set>
+         	<bean class="de.dailab.jiactng.agentcore.management.jmx.RmiJmxConnector">
+         		<property name="registryPort" value="1099"/>
+         	</bean>
+         </set>
+      </property>
+   </bean>
+
+   <!--
+      # The default AgentNode Spring configuration
+      # provides an empty platform definition without JMX support but with a distributed agent and service directory.
+      # the platform bean may be set as parent in any other platfom definitions 
+      
+   -->
+   <bean name="NodeWithDirectory" parent="Node" abstract="true">
+		<property name="agentNodeBeans">
+			<list>
+				<ref bean="StandardJMSBroker"/>
+				<ref bean="IDirectory"/>
+			</list>
+		</property>
+   </bean>
+
+   <!--
+      # The default AgentNode Spring configuration
+      # provides an empty platform definition without JMX and directory support.
+      # the platform bean may be set as parent in any other platfom definitions 
+      
+   -->
+   <bean name="Node" class="de.dailab.jiactng.agentcore.SimpleAgentNode" abstract="true">
+   </bean>
+
+	<!-- 
+		##################################################################
+		# Bean providing yellow and white pages functionality for agents #
+		##################################################################
+	 -->
+
+	<bean name="IDirectory" class="de.dailab.jiactng.agentcore.directory.DirectoryAgentNodeBean" scope="singleton" lazy-init="true"> 
+		<property name="messageTransport">
+			<ref bean="StandardJMSMessageTransport" />
+		</property>
+	</bean>
+
+</beans>

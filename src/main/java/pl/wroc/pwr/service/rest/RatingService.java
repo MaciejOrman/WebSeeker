@@ -2,17 +2,17 @@ package pl.wroc.pwr.service.rest;
 
 import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import pl.wroc.pwr.repository.dao.RankedLinkDAO;
 import pl.wroc.pwr.repository.model.RankedLink;
 import pl.wroc.pwr.service.rest.data.LinkAndGrade;
 import pl.wroc.pwr.service.rest.data.ReccomendedLinks;
 
-@RestController
+@Controller
 public class RatingService {
 
 	@Autowired

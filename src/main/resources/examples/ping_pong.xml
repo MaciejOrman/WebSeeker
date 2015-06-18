@@ -1,0 +1,49 @@
+ <!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="AgentNode.xml" />
+	<import resource="Agent.xml" />
+	<import resource="JMSMessaging.xml" />
+
+
+
+	<bean name="PingPongNode" parent="NodeWithJMX">
+		<property name="agents">
+			<list>
+				<ref bean="PingAgent" />
+				<ref bean="PongAgent" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="PingAgent" parent="SimpleAgent">
+		<property name="agentBeans">
+			<list>
+				<ref bean="PingBean" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="PongAgent" parent="SimpleAgent">
+		<property name="agentBeans">
+			<list>
+				<ref bean="PongBean" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="PingBean" class="pl.wroc.pwr.jiac.PingBean">
+		<property name="executionInterval" value="1000" />
+		<property name="logLevel" value="INFO" />
+	</bean>
+
+	<bean name="PongBean" class="pl.wroc.pwr.jiac.PongBean">
+		<property name="logLevel" value="INFO" />
+	</bean>
+
+</beans>

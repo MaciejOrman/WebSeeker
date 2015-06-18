@@ -18,9 +18,25 @@ sModule.service('linkService', function($rootScope,$http, $q){
 				return deferred.promise;
 		}
 		
-		this.getSortedLinks = function(query1, nick1){
+		this.getMeanSortedLinks = function(query1, nick1){
 			var deferred = $q.defer();
 			$http.post('/meanratesearch', {query:  query1, nick: nick1 }).success(function(data) {
+			    			  deferred.resolve(data);
+			    		  }).
+			    		  error(function(data, status, headers, config) {
+			    			  alert(data);
+			    				$rootScope.errorMessage = data;
+			    				$rootScope.showErrorMessage = true;
+			    				deferred.reject(data);
+			    		  });
+				return deferred.promise;
+			
+			
+		}
+		
+		this.getCollSortedLinks = function(query1, nick1){
+			var deferred = $q.defer();
+			$http.post('/collsearch', {query:  query1, nick: nick1 }).success(function(data) {
 			    			  deferred.resolve(data);
 			    		  }).
 			    		  error(function(data, status, headers, config) {
